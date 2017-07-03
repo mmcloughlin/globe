@@ -53,6 +53,16 @@ func (g *Globe) DrawGraticules(interval float64) {
 	g.DrawMeridians(interval)
 }
 
+func (g *Globe) DrawDot(lat, lng float64, radius float64) {
+	x, y, z := cartestian(lat, lng)
+	g.p.DrawDot(x, y, z, radius)
+}
+
+func (g *Globe) CenterOn(lat, lng float64) {
+	g.p.Rotate(0, 0, -degToRad(lng)-math.Pi/2)
+	g.p.Rotate(degToRad(lat)+math.Pi/2, 0, 0)
+}
+
 func (g *Globe) SavePNG(filename string, side int, opts *pinhole.ImageOptions) error {
 	return g.p.SavePNG(filename, side, side, opts)
 }
