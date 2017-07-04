@@ -109,7 +109,7 @@ func (g *Globe) DrawDot(lat, lng float64, radius float64, style ...Option) {
 
 func (g *Globe) CenterOn(lat, lng float64) {
 	g.p.Rotate(0, 0, -degToRad(lng)-math.Pi/2)
-	g.p.Rotate(degToRad(lat)+math.Pi/2, 0, 0)
+	g.p.Rotate(math.Pi/2-degToRad(lat), 0, 0)
 }
 
 func (g *Globe) SavePNG(filename string, side int) error {
@@ -122,7 +122,7 @@ func cartestian(lat, lng float64) (x, y, z float64) {
 	lambda := degToRad(lng)
 	x = math.Cos(phi) * math.Cos(lambda)
 	y = math.Cos(phi) * math.Sin(lambda)
-	z = math.Sin(phi)
+	z = -math.Sin(phi)
 	return
 }
 
