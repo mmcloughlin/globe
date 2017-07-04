@@ -1,2 +1,4 @@
 # globe
-3D wireframes on the globe with [Pinhole](https://github.com/tidwall/pinhole)
+
+Globe visualizations in Golang backed by
+[pinhole](https://github.com/tidwall/pinhole).
