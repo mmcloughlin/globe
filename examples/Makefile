@@ -1,7 +1,19 @@
-all: starbucks.png cities.png
+examples=starbucks cities
+
+images: $(addsuffix .png, $(examples))
+
+upload: $(addsuffix .imgur, $(examples))
+
+snippets: $(addsuffix .snip, $(examples))
 
 %.png: %.go
-	go run -tags $* main.go $< -filename $@ -side 600
+	go run -tags $* main.go $< -filename $@ -side 400
+
+%.imgur: %.png tools
+	imgur -a=true $< > $@
+
+%.snip: %.go
+	awk '/BEGIN/ {flag=1; i=index($$0, "//"); next} /END/ {flag=0} flag {print substr($$0,i)}' < $< > $@
 
 starbucks.png: starbucks.json
 
@@ -12,6 +24,9 @@ cities.png: cities.json
 
 cities.json:
 	wget -O cities.json 'https://unpkg.com/cities.json@1.0.2/cities.json'
+
+tools:
+	go get github.com/mattn/imgur
 
 clean:
 	$(RM) *.json *.png

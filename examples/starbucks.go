@@ -31,6 +31,7 @@ func LoadCoffeeShops(filename string) ([]CoffeeShop, error) {
 }
 
 func Build() (*globe.Globe, error) {
+	// BEGIN
 	shops, err := LoadCoffeeShops("./starbucks.json")
 	if err != nil {
 		return nil, err
@@ -43,6 +44,7 @@ func Build() (*globe.Globe, error) {
 		g.DrawDot(s.Lat, s.Lng, 0.05, globe.Color(green))
 	}
 	g.CenterOn(40.645423, -73.903879)
+	// END
 
 	return g, nil
 }

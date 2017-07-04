@@ -47,6 +47,7 @@ func LoadCities(filename string) ([]City, error) {
 }
 
 func Build() (*globe.Globe, error) {
+	// BEGIN
 	cities, err := LoadCities("./cities.json")
 	if err != nil {
 		return nil, err
@@ -59,6 +60,7 @@ func Build() (*globe.Globe, error) {
 		g.DrawDot(s.Lat, s.Lng, 0.02, globe.Color(c))
 	}
 	g.CenterOn(51.453349, -2.588323)
+	// END
 
 	return g, nil
 }

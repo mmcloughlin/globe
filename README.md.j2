@@ -1,0 +1,34 @@
+# globe
+
+Globe visualizations in Golang backed by
+[pinhole](https://github.com/tidwall/pinhole).
+
+{% macro image(name) -%}
+<p align="center"><img src="{% include 'examples/' + name + '.imgur' %}" /></p>
+{%- endmacro %}
+
+{% macro code(name) -%}
+```go
+{% include 'examples/' + name + '.snip' %}
+```
+{%- endmacro %}
+
+{{ image('cities') }}
+
+## Getting Started
+
+Install `globe` with
+
+```sh
+$ go get -u github.com/mmcloughlin/globe
+```
+
+Here's how to plot all the Starbucks locations.
+
+{{ code('starbucks') }}
+
+{{ image('starbucks') }}
+
+## License
+
+`globe` is available under the ISC [License](/LICENSE).
