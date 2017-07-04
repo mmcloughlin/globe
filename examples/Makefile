@@ -7,13 +7,13 @@ upload: $(addsuffix .imgur, $(examples))
 snippets: $(addsuffix .snip, $(examples))
 
 %.png: %.go
-	go run -tags $* main.go $< -filename $@ -side 400
+	go run $<
 
 %.imgur: %.png tools
 	imgur -a=true $< > $@
 
 %.snip: %.go
-	awk '/BEGIN/ {flag=1; i=index($$0, "//"); next} /END/ {flag=0} flag {print substr($$0,i)}' < $< > $@
+	awk '/func main/ {flag=1; next} /^}/ {flag=0} flag {print substr($$0,2)}' < $< > $@
 
 starbucks.png: starbucks.json
 

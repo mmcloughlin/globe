@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"image/color"
 	"io/ioutil"
+	"log"
 
 	"github.com/mmcloughlin/globe"
 )
@@ -46,11 +47,10 @@ func LoadCities(filename string) ([]City, error) {
 	return cities, nil
 }
 
-func Build() (*globe.Globe, error) {
-	// BEGIN
+func main() {
 	cities, err := LoadCities("./cities.json")
 	if err != nil {
-		return nil, err
+		log.Fatal(err)
 	}
 
 	c := color.NRGBA{0x11, 0x2F, 0x56, 128}
@@ -60,7 +60,8 @@ func Build() (*globe.Globe, error) {
 		g.DrawDot(s.Lat, s.Lng, 0.02, globe.Color(c))
 	}
 	g.CenterOn(51.453349, -2.588323)
-	// END
-
-	return g, nil
+	err = g.SavePNG("cities.png", 400)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

@@ -1,11 +1,10 @@
-// +build starbucks
-
 package main
 
 import (
 	"encoding/json"
 	"image/color"
 	"io/ioutil"
+	"log"
 
 	"github.com/mmcloughlin/globe"
 )
@@ -30,11 +29,10 @@ func LoadCoffeeShops(filename string) ([]CoffeeShop, error) {
 	return shops, nil
 }
 
-func Build() (*globe.Globe, error) {
-	// BEGIN
+func main() {
 	shops, err := LoadCoffeeShops("./starbucks.json")
 	if err != nil {
-		return nil, err
+		log.Fatal(err)
 	}
 
 	green := color.NRGBA{0x00, 0x64, 0x3c, 192}
@@ -44,7 +42,8 @@ func Build() (*globe.Globe, error) {
 		g.DrawDot(s.Lat, s.Lng, 0.05, globe.Color(green))
 	}
 	g.CenterOn(40.645423, -73.903879)
-	// END
-
-	return g, nil
+	err = g.SavePNG("starbucks.png", 400)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

@@ -22,7 +22,7 @@ Here's how to plot all the Starbucks locations.
 ```go
 shops, err := LoadCoffeeShops("./starbucks.json")
 if err != nil {
-	return nil, err
+	log.Fatal(err)
 }
 
 green := color.NRGBA{0x00, 0x64, 0x3c, 192}
@@ -32,6 +32,10 @@ for _, s := range shops {
 	g.DrawDot(s.Lat, s.Lng, 0.05, globe.Color(green))
 }
 g.CenterOn(40.645423, -73.903879)
+err = g.SavePNG("starbucks.png", 400)
+if err != nil {
+	log.Fatal(err)
+}
 ```
 
 <p align="center"><img src="http://i.imgur.com/do3m4Bj.png" /></p>
