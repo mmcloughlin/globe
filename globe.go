@@ -1,3 +1,4 @@
+// Package globe builds 3D visualizations on the earth.
 package globe
 
 import (
@@ -7,8 +8,10 @@ import (
 	"github.com/tidwall/pinhole"
 )
 
+// precision is the gap between nodes of a line in degrees.
 const precision = 1.0
 
+// Style encapsulates globe display options.
 type Style struct {
 	GraticuleColor color.Color
 	DotColor       color.Color
@@ -17,6 +20,7 @@ type Style struct {
 	Scale          float64
 }
 
+// imageOptions builds the pinhole ImageOptions object for this Style.
 func (s Style) imageOptions() *pinhole.ImageOptions {
 	return &pinhole.ImageOptions{
 		BGColor:   s.Background,
@@ -25,6 +29,7 @@ func (s Style) imageOptions() *pinhole.ImageOptions {
 	}
 }
 
+// DefaultStyle specifies out-of-the box style options.
 var DefaultStyle = Style{
 	GraticuleColor: color.Gray{192},
 	DotColor:       color.NRGBA{255, 0, 0, 255},
@@ -33,11 +38,13 @@ var DefaultStyle = Style{
 	Scale:          0.7,
 }
 
+// Globe is a globe visualization.
 type Globe struct {
 	p     *pinhole.Pinhole
 	style Style
 }
 
+// New constructs an empty globe with the default style.
 func New() *Globe {
 	return &Globe{
 		p:     pinhole.New(),
@@ -45,14 +52,18 @@ func New() *Globe {
 	}
 }
 
+// Option is a function that stylizes a globe.
 type Option func(*Globe)
 
+// Color uses the given color.
 func Color(c color.Color) Option {
 	return func(g *Globe) {
 		g.p.Colorize(c)
 	}
 }
 
+// styled is an internal convenience for applying style Options within a pinhole
+// Begin/End context.
 func (g *Globe) styled(base Option, options ...Option) func() {
 	g.p.Begin()
 	return func() {
@@ -64,6 +75,8 @@ func (g *Globe) styled(base Option, options ...Option) func() {
 	}
 }
 
+// DrawParallel draws the parallel of latitude lat.
+// Uses the default GraticuleColor unless overridden by style Options.
 func (g *Globe) DrawParallel(lat float64, style ...Option) {
 	defer g.styled(Color(g.style.GraticuleColor), style...)()
 	for lng := -180.0; lng < 180.0; lng += precision {
@@ -73,6 +86,8 @@ func (g *Globe) DrawParallel(lat float64, style ...Option) {
 	}
 }
 
+// DrawParallels draws parallels at the given interval.
+// Uses the default GraticuleColor unless overridden by style Options.
 func (g *Globe) DrawParallels(interval float64, style ...Option) {
 	g.DrawParallel(0, style...)
 	for lat := interval; lat < 90.0; lat += interval {
@@ -81,6 +96,8 @@ func (g *Globe) DrawParallels(interval float64, style ...Option) {
 	}
 }
 
+// DrawMeridian draws the meridian at longitude lng.
+// Uses the default GraticuleColor unless overridden by style Options.
 func (g *Globe) DrawMeridian(lng float64, style ...Option) {
 	defer g.styled(Color(g.style.GraticuleColor), style...)()
 	for lat := -90.0; lat < 90.0; lat += precision {
@@ -90,33 +107,43 @@ func (g *Globe) DrawMeridian(lng float64, style ...Option) {
 	}
 }
 
+// DrawMeridians draws meridians at the given interval.
+// Uses the default GraticuleColor unless overridden by style Options.
 func (g *Globe) DrawMeridians(interval float64, style ...Option) {
 	for lng := -180.0; lng < 180.0; lng += interval {
 		g.DrawMeridian(lng, style...)
 	}
 }
 
-func (g *Globe) DrawGraticules(interval float64, style ...Option) {
+// DrawGraticule draws a latitude/longitude grid at the given interval.
+// Uses the default GraticuleColor unless overridden by style Options.
+func (g *Globe) DrawGraticule(interval float64, style ...Option) {
 	g.DrawParallels(interval, style...)
 	g.DrawMeridians(interval, style...)
 }
 
+// DrawDot draws a dot at (lat, lng) with the given radius.
+// Uses the default DotColor unless overridden by style Options.
 func (g *Globe) DrawDot(lat, lng float64, radius float64, style ...Option) {
 	defer g.styled(Color(g.style.DotColor), style...)()
 	x, y, z := cartestian(lat, lng)
 	g.p.DrawDot(x, y, z, radius)
 }
 
+// CenterOn rotates the globe to center on (lat, lng).
 func (g *Globe) CenterOn(lat, lng float64) {
 	g.p.Rotate(0, 0, -degToRad(lng)-math.Pi/2)
 	g.p.Rotate(math.Pi/2-degToRad(lat), 0, 0)
 }
 
+// SavePNG writes the visualization to filename in PNG format with dimensions
+// (side, side).
 func (g *Globe) SavePNG(filename string, side int) error {
 	opts := g.style.imageOptions()
 	return g.p.SavePNG(filename, side, side, opts)
 }
 
+// cartestian maps (lat, lng) to pinhole cartestian space.
 func cartestian(lat, lng float64) (x, y, z float64) {
 	phi := degToRad(lat)
 	lambda := degToRad(lng)
@@ -126,6 +153,7 @@ func cartestian(lat, lng float64) (x, y, z float64) {
 	return
 }
 
+// degToRad converts d degrees to radians.
 func degToRad(d float64) float64 {
 	return math.Pi * d / 180.0
 }
