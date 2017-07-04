@@ -1,3 +1,5 @@
+// +build starbucks
+
 package main
 
 import (
