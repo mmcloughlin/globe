@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"strings"
 
 	geojson "github.com/paulmach/go.geojson"
 )
@@ -60,10 +61,11 @@ func ExtractPathsFromFeatureCollection(collection *geojson.FeatureCollection) []
 }
 
 func WritePathsCode(w io.Writer, varname string, paths [][][]float64) error {
-	fmt.Fprint(w, "// Generated code. DO NOT EDIT.\n\n")
+	fmt.Fprint(w, "// Generated code. DO NOT EDIT.\n")
+	fmt.Fprintf(w, "// Arguments: %s\n\n", strings.Join(os.Args[1:], " "))
 	fmt.Fprint(w, "package globe\n")
 
-	fmt.Fprintf(w, "var %s = [][]struct{lat, lng float32}{\n", varname)
+	fmt.Fprintf(w, "var %s = [][]struct{\nlat, lng float32\n}{\n", varname)
 	for _, path := range paths {
 		fmt.Fprint(w, "{\n")
 		for _, point := range path {

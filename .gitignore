@@ -1,4 +1,6 @@
 *.png
+*.geojson
+*.topojson
 
 # Binaries for programs and plugins
 *.exe

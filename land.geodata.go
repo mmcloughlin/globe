@@ -1,8 +1,11 @@
 // Generated code. DO NOT EDIT.
+// Arguments: -input land.world.geojson -output land.geodata.go -var land
 
 package globe
 
-var land = [][]struct{ lat, lng float32 }{
+var land = [][]struct {
+	lat, lng float32
+}{
 	{
 		{21.551925078161887, 108.04968049680497},
 		{20.697182983479223, 106.71406714067143},
