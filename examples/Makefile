@@ -1,4 +1,4 @@
-examples=land starbucks cities
+examples=graticule land starbucks cities
 
 images: $(addsuffix .png, $(examples))
 
