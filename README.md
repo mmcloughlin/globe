@@ -10,7 +10,7 @@ Globe visualizations in Golang backed by
 
 
 
-<p align="center"><img src="http://i.imgur.com/VuDcbKB.png" /></p>
+<p align="center"><img src="http://i.imgur.com/v7JkXNm.png" /></p>
 
 ## Getting Started
 
@@ -20,7 +20,27 @@ Install `globe` with
 $ go get -u github.com/mmcloughlin/globe
 ```
 
-Here's how to plot all the Starbucks locations.
+Start with a blank globe with a graticule at 10 degree intervals.
+
+```go
+g := globe.New()
+g.DrawGraticule(10.0)
+g.SavePNG("graticule.png", 400)
+```
+<p align="center"><img src="http://i.imgur.com/LI9dzfy.png" /></p>
+
+Add some land boundaries and center it on a point.
+
+```go
+g := globe.New()
+g.DrawGraticule(10.0)
+g.DrawLandBoundaries()
+g.CenterOn(51.453349, -2.588323)
+g.SavePNG("land.png", 400)
+```
+<p align="center"><img src="http://i.imgur.com/JriPCRU.png" /></p>
+
+Here's all the [Starbucks locations](https://github.com/mmcloughlin/starbucks).
 
 ```go
 shops, err := LoadCoffeeShops("./starbucks.json")
@@ -40,8 +60,7 @@ if err != nil {
 	log.Fatal(err)
 }
 ```
-
-<p align="center"><img src="http://i.imgur.com/do3m4Bj.png" /></p>
+<p align="center"><img src="http://i.imgur.com/WzcEGNO.png" /></p>
 
 ## License
 
