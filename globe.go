@@ -172,13 +172,27 @@ func (g *Globe) SavePNG(filename string, side int) error {
 
 // cartestian maps (lat, lng) to pinhole cartestian space.
 func cartestian(lat, lng float64) (x, y, z float64) {
-	phi := degToRad(lat)
-	lambda := degToRad(lng)
-	x = math.Cos(phi) * math.Cos(lambda)
-	y = math.Cos(phi) * math.Sin(lambda)
-	z = -math.Sin(phi)
+	x = cos(lat) * cos(lng)
+	y = cos(lat) * sin(lng)
+	z = -sin(lat)
 	return
 }
+
+// haversine returns the distance (in km) between the points (lat1, lng1) and
+// (lat2, lng2).
+func haversine(lat1, lng1, lat2, lng2 float64) float64 {
+	dlat := lat2 - lat1
+	dlng := lng2 - lng1
+	a := sin(dlat/2)*sin(dlat/2) + cos(lat1)*cos(lat2)*sin(dlng/2)*sin(dlng/2)
+	c := 2 * math.Atan2(math.Sqrt(a), math.Sqrt(1-a))
+	return 6371 * c
+}
+
+// sin is math.Sin for degrees.
+func sin(d float64) float64 { return math.Sin(degToRad(d)) }
+
+// cos is math.Cos for degrees
+func cos(d float64) float64 { return math.Cos(degToRad(d)) }
 
 // degToRad converts d degrees to radians.
 func degToRad(d float64) float64 {
