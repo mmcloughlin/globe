@@ -1,4 +1,4 @@
-datafiles: land.go
+datafiles: land.geodata.go
 
 world.topojson:
 	wget -O $@ https://unpkg.com/world-atlas@1.1.4/world/110m.json
