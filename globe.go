@@ -8,8 +8,16 @@ import (
 	"github.com/tidwall/pinhole"
 )
 
-// precision is the gap between nodes of a line in degrees.
-const precision = 1.0
+// Precision constants.
+const (
+	// graticuleLineStep is the gap between nodes of a parallel or meridian line
+	// in degrees.
+	graticuleLineStep = 1.0
+
+	// linePointInterval is the max distance (in km) between line segments when
+	// drawing along a great circle.
+	linePointInterval = 500.0
+)
 
 // Style encapsulates globe display options.
 type Style struct {
@@ -81,9 +89,9 @@ func (g *Globe) styled(base Option, options ...Option) func() {
 // Uses the default GraticuleColor unless overridden by style Options.
 func (g *Globe) DrawParallel(lat float64, style ...Option) {
 	defer g.styled(Color(g.style.GraticuleColor), style...)()
-	for lng := -180.0; lng < 180.0; lng += precision {
+	for lng := -180.0; lng < 180.0; lng += graticuleLineStep {
 		x1, y1, z1 := cartestian(lat, lng)
-		x2, y2, z2 := cartestian(lat, lng+precision)
+		x2, y2, z2 := cartestian(lat, lng+graticuleLineStep)
 		g.p.DrawLine(x1, y1, z1, x2, y2, z2)
 	}
 }
@@ -102,9 +110,9 @@ func (g *Globe) DrawParallels(interval float64, style ...Option) {
 // Uses the default GraticuleColor unless overridden by style Options.
 func (g *Globe) DrawMeridian(lng float64, style ...Option) {
 	defer g.styled(Color(g.style.GraticuleColor), style...)()
-	for lat := -90.0; lat < 90.0; lat += precision {
+	for lat := -90.0; lat < 90.0; lat += graticuleLineStep {
 		x1, y1, z1 := cartestian(lat, lng)
-		x2, y2, z2 := cartestian(lat+precision, lng)
+		x2, y2, z2 := cartestian(lat+graticuleLineStep, lng)
 		g.p.DrawLine(x1, y1, z1, x2, y2, z2)
 	}
 }
@@ -130,6 +138,26 @@ func (g *Globe) DrawDot(lat, lng float64, radius float64, style ...Option) {
 	defer g.styled(Color(g.style.DotColor), style...)()
 	x, y, z := cartestian(lat, lng)
 	g.p.DrawDot(x, y, z, radius)
+}
+
+// DrawLine draws a line between (lat1, lng1) and (lat2, lng2) along the great
+// circle.
+// Uses the default LineColor unless overridden by style Options.
+func (g *Globe) DrawLine(lat1, lng1, lat2, lng2 float64, style ...Option) {
+	defer g.styled(Color(g.style.LineColor), style...)()
+
+	d := haversine(lat1, lng1, lat2, lng2)
+	step := d / math.Ceil(d/linePointInterval)
+	fx, fy, fz := cartestian(lat1, lng1)
+	for p := step; p < d-step/2; p += step {
+		tlat, tlng := intermediate(lat1, lng1, lat2, lng2, p/d)
+		tx, ty, tz := cartestian(tlat, tlng)
+		g.p.DrawLine(fx, fy, fz, tx, ty, tz)
+		fx, fy, fz = tx, ty, tz
+	}
+
+	tx, ty, tz := cartestian(lat2, lng2)
+	g.p.DrawLine(fx, fy, fz, tx, ty, tz)
 }
 
 // DrawLandBoundaries draws land boundaries on the globe.
