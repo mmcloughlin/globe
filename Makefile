@@ -9,3 +9,6 @@ world.topojson:
 %.geodata.go: %.world.geojson includegeojson.go
 	go run includegeojson.go -input $< -output $@ -var $*
 	gofmt -s -w $@
+
+tools:
+	npm install -g topojson

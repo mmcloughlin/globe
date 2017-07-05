@@ -5,5 +5,5 @@ go:
     - tip
 install:
     - go get -v .
-test:
+script:
     - go test -v
