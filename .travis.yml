@@ -4,7 +4,7 @@ go:
     - 1.8.x
     - tip
 install:
-    - go get -v .
+    - go get -v -t .
 script:
     - go test -v
     - make -C examples images
