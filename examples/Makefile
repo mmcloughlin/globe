@@ -1,4 +1,4 @@
-examples=starbucks cities
+examples=land starbucks cities
 
 images: $(addsuffix .png, $(examples))
 
