@@ -1,5 +1,9 @@
 language: go
 go:
-  - 1.7.x
-  - 1.8.x
-  - tip
+    - 1.7.x
+    - 1.8.x
+    - tip
+install:
+    - go get -v .
+test:
+    - go test -v
