@@ -178,6 +178,9 @@ func cartestian(lat, lng float64) (x, y, z float64) {
 	return
 }
 
+// earthRadius is the radius of the earth.
+const earthRadius = 6371.0
+
 // haversine returns the distance (in km) between the points (lat1, lng1) and
 // (lat2, lng2).
 func haversine(lat1, lng1, lat2, lng2 float64) float64 {
@@ -185,7 +188,30 @@ func haversine(lat1, lng1, lat2, lng2 float64) float64 {
 	dlng := lng2 - lng1
 	a := sin(dlat/2)*sin(dlat/2) + cos(lat1)*cos(lat2)*sin(dlng/2)*sin(dlng/2)
 	c := 2 * math.Atan2(math.Sqrt(a), math.Sqrt(1-a))
-	return 6371 * c
+	return earthRadius * c
+}
+
+// intermediate returns the point that is fraction f between (lat1, lng1) and
+// (lat2, lng2).
+func intermediate(lat1, lng1, lat2, lng2, f float64) (float64, float64) {
+	dr := haversine(lat1, lng1, lat2, lng2) / earthRadius
+	a := math.Sin((1-f)*dr) / math.Sin(dr)
+	b := math.Sin(f*dr) / math.Sin(dr)
+	x := a*cos(lat1)*cos(lng1) + b*cos(lat2)*cos(lng2)
+	y := a*cos(lat1)*sin(lng1) + b*cos(lat2)*sin(lng2)
+	z := a*sin(lat1) + b*sin(lat2)
+	phi := math.Atan2(z, math.Sqrt(x*x+y*y))
+	lambda := math.Atan2(y, x)
+	return radToDeg(phi), radToDeg(lambda)
+}
+
+// destination computes the destination point reached when travelling distance d
+// from (lat, lng) at bearing brng.
+func destination(lat, lng, d, brng float64) (float64, float64) {
+	dr := d / earthRadius
+	phi := math.Asin(sin(lat)*math.Cos(dr) + cos(lat)*math.Sin(dr)*cos(brng))
+	lambda := degToRad(lng) + math.Atan2(sin(brng)*math.Sin(dr)*cos(lat), math.Cos(dr)-sin(lat)*math.Sin(phi))
+	return radToDeg(phi), math.Mod(radToDeg(lambda)+540, 360) - 180
 }
 
 // sin is math.Sin for degrees.
@@ -197,4 +223,9 @@ func cos(d float64) float64 { return math.Cos(degToRad(d)) }
 // degToRad converts d degrees to radians.
 func degToRad(d float64) float64 {
 	return math.Pi * d / 180.0
+}
+
+// radToDeg converts r radians to degrees.
+func radToDeg(r float64) float64 {
+	return 180.0 * r / math.Pi
 }
