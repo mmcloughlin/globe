@@ -1,4 +1,4 @@
-geodata: land.geodata.go
+geodata: land.geodata.go countries.geodata.go
 
 world.topojson:
 	wget -O $@ https://unpkg.com/world-atlas@1.1.4/world/110m.json

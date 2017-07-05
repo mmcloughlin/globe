@@ -138,6 +138,12 @@ func (g *Globe) DrawLandBoundaries(style ...Option) {
 	g.drawPreparedPaths(land, style...)
 }
 
+// DrawCountryBoundaries draws country boundaries on the globe.
+// Uses the default LineColor unless overridden by style Options.
+func (g *Globe) DrawCountryBoundaries(style ...Option) {
+	g.drawPreparedPaths(countries, style...)
+}
+
 func (g *Globe) drawPreparedPaths(paths [][]struct{ lat, lng float32 }, style ...Option) {
 	defer g.styled(Color(g.style.LineColor), style...)()
 	for _, path := range paths {
