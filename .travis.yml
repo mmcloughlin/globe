@@ -7,3 +7,4 @@ install:
     - go get -v .
 script:
     - go test -v
+    - make -C examples images
