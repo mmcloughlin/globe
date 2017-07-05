@@ -1,12 +1,8 @@
 package globe
 
 import (
-	"fmt"
-	"math/rand"
 	"testing"
 
-	geo "github.com/kellydunn/golang-geo"
-	"github.com/mmcloughlin/spherand"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -15,23 +11,6 @@ func TestCartestian(t *testing.T) {
 	assert.Equal(t, -0.7106729309733519, x)
 	assert.Equal(t, -0.2172745194807066, y)
 	assert.Equal(t, -0.6691306063588582, z)
-}
-
-func TestGenCases(t *testing.T) {
-	for i := 0; i < 10; i++ {
-		p1 := geo.NewPoint(spherand.Geographical())
-		brng := 360 * rand.Float64()
-		d := 1000 * rand.Float64()
-		p2 := p1.PointAtDistanceAndBearing(d, brng)
-		f := rand.Float64()
-		p3 := p1.PointAtDistanceAndBearing(f*d, brng)
-		fmt.Printf("{%v, %v, %v, %v, %v, %v, %v},\n",
-			p1.Lat(), p1.Lng(),
-			p2.Lat(), p2.Lng(),
-			f,
-			p3.Lat(), p3.Lng(),
-		)
-	}
 }
 
 func TestHaversine(t *testing.T) {
