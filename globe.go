@@ -14,6 +14,7 @@ const precision = 1.0
 // Style encapsulates globe display options.
 type Style struct {
 	GraticuleColor color.Color
+	LineColor      color.Color
 	DotColor       color.Color
 	Background     color.Color
 	LineWidth      float64
@@ -32,6 +33,7 @@ func (s Style) imageOptions() *pinhole.ImageOptions {
 // DefaultStyle specifies out-of-the box style options.
 var DefaultStyle = Style{
 	GraticuleColor: color.Gray{192},
+	LineColor:      color.Gray{32},
 	DotColor:       color.NRGBA{255, 0, 0, 255},
 	Background:     color.White,
 	LineWidth:      0.1,
@@ -128,6 +130,25 @@ func (g *Globe) DrawDot(lat, lng float64, radius float64, style ...Option) {
 	defer g.styled(Color(g.style.DotColor), style...)()
 	x, y, z := cartestian(lat, lng)
 	g.p.DrawDot(x, y, z, radius)
+}
+
+// DrawLandBoundaries draws land boundaries on the globe.
+// Uses the default LineColor unless overridden by style Options.
+func (g *Globe) DrawLandBoundaries(style ...Option) {
+	g.drawPreparedPaths(land, style...)
+}
+
+func (g *Globe) drawPreparedPaths(paths [][]struct{ lat, lng float32 }, style ...Option) {
+	defer g.styled(Color(g.style.LineColor), style...)()
+	for _, path := range paths {
+		n := len(path)
+		for i := 0; i+1 < n; i++ {
+			p1, p2 := path[i], path[i+1]
+			x1, y1, z1 := cartestian(float64(p1.lat), float64(p1.lng))
+			x2, y2, z2 := cartestian(float64(p2.lat), float64(p2.lng))
+			g.p.DrawLine(x1, y1, z1, x2, y2, z2)
+		}
+	}
 }
 
 // CenterOn rotates the globe to center on (lat, lng).
