@@ -31,7 +31,9 @@ Start with a blank globe with a graticule at 10 degree intervals.
 {{ code('graticule') }}
 {{ image('graticule') }}
 
-Add some land boundaries and center it on a point.
+Add some land boundaries and center it on a point. Alternatively
+[`DrawCountryBoundaries`](https://godoc.org/github.com/mmcloughlin/globe#Globe.DrawCountryBoundaries)
+will give you countries.
 
 {{ code('land') }}
 {{ image('land') }}
@@ -40,6 +42,16 @@ Here's all the [Starbucks locations](https://github.com/mmcloughlin/starbucks).
 
 {{ code('starbucks') }}
 {{ image('starbucks') }}
+
+You can also do lines along great circles.
+
+{{ code('line') }}
+{{ image('line') }}
+
+Also rectangles.
+
+{{ code('rect') }}
+{{ image('rect') }}
 
 See [examples](examples/) and
 [godoc](https://godoc.org/github.com/mmcloughlin/globe) for more.
