@@ -160,6 +160,16 @@ func (g *Globe) DrawLine(lat1, lng1, lat2, lng2 float64, style ...Option) {
 	g.p.DrawLine(fx, fy, fz, tx, ty, tz)
 }
 
+// DrawRect draws the rectangle with the given corners. Sides are drawn along
+// great circles, as in DrawLine.
+// Uses the default LineColor unless overridden by style Options.
+func (g *Globe) DrawRect(minlat, minlng, maxlat, maxlng float64, style ...Option) {
+	g.DrawLine(minlat, minlng, maxlat, minlng, style...)
+	g.DrawLine(maxlat, minlng, maxlat, maxlng, style...)
+	g.DrawLine(maxlat, maxlng, minlat, maxlng, style...)
+	g.DrawLine(minlat, maxlng, minlat, minlng, style...)
+}
+
 // DrawLandBoundaries draws land boundaries on the globe.
 // Uses the default LineColor unless overridden by style Options.
 func (g *Globe) DrawLandBoundaries(style ...Option) {

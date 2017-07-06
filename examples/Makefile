@@ -1,4 +1,4 @@
-examples=graticule land countries line starbucks cities
+examples=graticule land countries line rect starbucks cities
 
 images: $(addsuffix .png, $(examples))
 
