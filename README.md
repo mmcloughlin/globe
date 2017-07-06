@@ -1,6 +1,6 @@
 # globe
 
-Globe visualizations in Golang backed by
+Globe wireframe visualizations in Golang backed by
 [pinhole](https://github.com/tidwall/pinhole).
 
 [![GoDoc Reference](http://img.shields.io/badge/godoc-reference-5272B4.svg?style=flat-square)](http://godoc.org/github.com/mmcloughlin/globe)
@@ -61,6 +61,9 @@ if err != nil {
 }
 ```
 <p align="center"><img src="http://i.imgur.com/WzcEGNO.png" /></p>
+
+See [examples](examples/) and
+[godoc](https://godoc.org/github.com/mmcloughlin/globe) for more.
 
 ## License
 
