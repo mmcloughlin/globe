@@ -2,6 +2,7 @@
 package globe
 
 import (
+	"image"
 	"image/color"
 	"math"
 
@@ -199,6 +200,13 @@ func (g *Globe) drawPreparedPaths(paths [][]struct{ lat, lng float32 }, style ..
 func (g *Globe) CenterOn(lat, lng float64) {
 	g.p.Rotate(0, 0, -degToRad(lng)-math.Pi/2)
 	g.p.Rotate(math.Pi/2-degToRad(lat), 0, 0)
+}
+
+// Image renders an image object for the visualization with dimensions
+// (side, side).
+func (g *Globe) Image(side int) *image.RGBA {
+	opts := g.style.imageOptions()
+	return g.p.Image(side, side, opts)
 }
 
 // SavePNG writes the visualization to filename in PNG format with dimensions
