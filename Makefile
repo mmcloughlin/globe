@@ -12,3 +12,10 @@ world.topojson:
 
 tools:
 	npm install -g topojson
+
+testimages:
+	go test -images
+
+testimagehashes: testimages
+	md5sum Test*.png
+
