@@ -1,10 +1,107 @@
 package globe
 
 import (
+	"crypto/md5"
+	"encoding/hex"
+	"flag"
+	"fmt"
+	"image/png"
+	"io"
+	"os"
+	"runtime"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
+
+var (
+	outputImages = flag.Bool("images", false, "output images produced in test")
+)
+
+func CallingFunction() string {
+	pc, _, _, ok := runtime.Caller(2)
+	if !ok {
+		return ""
+	}
+	fn := runtime.FuncForPC(pc)
+	if fn == nil {
+		return ""
+	}
+	full := fn.Name()
+	parts := strings.Split(full, ".")
+	return parts[2]
+}
+
+func AssertPNGMD5(t *testing.T, g *Globe, expect string) {
+	m := g.Image(1024)
+	h := md5.New()
+	var w io.Writer = h
+	if *outputImages {
+		filename := fmt.Sprintf("%s.png", CallingFunction())
+		f, err := os.Create(filename)
+		require.NoError(t, err)
+		defer f.Close()
+		w = io.MultiWriter(h, f)
+	}
+	err := png.Encode(w, m)
+	require.NoError(t, err)
+	assert.Equal(t, expect, hex.EncodeToString(h.Sum(nil)))
+}
+
+func TestGraticule(t *testing.T) {
+	g := New()
+	g.DrawGraticule(10.0)
+	AssertPNGMD5(t, g, "5861947654cabd808bc3c75ab8018576")
+}
+
+func TestGraticuleCenterOn(t *testing.T) {
+	g := New()
+	g.DrawGraticule(10.0)
+	g.CenterOn(60, 5)
+	AssertPNGMD5(t, g, "04c8271e8d48ea580a6d340d9be7a261")
+}
+
+func TestDrawDots(t *testing.T) {
+	lat, lng := -89.5, -179.5
+	g := New()
+	for i := 0; i < 180; i++ {
+		g.DrawDot(lat, lng, 0.1)
+		lat += 1.0
+		lng += 2.0
+	}
+	g.CenterOn(0, 0)
+	AssertPNGMD5(t, g, "200588de765c11b6b4136b8df36a698c")
+}
+
+func TestDrawLand(t *testing.T) {
+	g := New()
+	g.DrawLandBoundaries()
+	g.CenterOn(51.453349, -2.588323)
+	AssertPNGMD5(t, g, "d7667370d3395cb7d987cee444e59b17")
+}
+
+func TestDrawCountries(t *testing.T) {
+	g := New()
+	g.DrawCountryBoundaries()
+	g.CenterOn(40.645423, -73.903879)
+	AssertPNGMD5(t, g, "139333c753ce3af5077a89b3c4bd8cdb")
+}
+
+func TestLine(t *testing.T) {
+	g := New()
+	g.DrawLine(51.453349, -2.588323, 40.645423, -73.903879)
+	g.CenterOn(30, -37)
+	AssertPNGMD5(t, g, "a2c7d6a4de4c652a5538544950fcde92")
+}
+
+func TestRect(t *testing.T) {
+	g := New()
+	g.DrawRect(41.897209, 12.500285, 55.782693, 37.615993)
+	g.CenterOn(48, 25)
+	AssertPNGMD5(t, g, "a1f7d08345c78e484612e211f8dc5e4b")
+}
 
 func TestCartestian(t *testing.T) {
 	x, y, z := cartestian(42, -163)
