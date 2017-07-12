@@ -8,8 +8,6 @@ import (
 	"image/png"
 	"io"
 	"os"
-	"runtime"
-	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -20,26 +18,12 @@ var (
 	outputImages = flag.Bool("images", false, "output images produced in test")
 )
 
-func CallingFunction() string {
-	pc, _, _, ok := runtime.Caller(2)
-	if !ok {
-		return ""
-	}
-	fn := runtime.FuncForPC(pc)
-	if fn == nil {
-		return ""
-	}
-	full := fn.Name()
-	parts := strings.Split(full, ".")
-	return parts[2]
-}
-
 func AssertPNGMD5(t *testing.T, g *Globe, expect string) {
 	m := g.Image(1024)
 	h := md5.New()
 	var w io.Writer = h
 	if *outputImages {
-		filename := fmt.Sprintf("%s.png", CallingFunction())
+		filename := fmt.Sprintf("%s.png", t.Name())
 		f, err := os.Create(filename)
 		require.NoError(t, err)
 		defer f.Close()
