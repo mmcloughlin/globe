@@ -42,7 +42,10 @@ g.SavePNG("land.png", 400)
 ```
 <p align="center"><img src="http://i.imgur.com/VNsNySI.png" /></p>
 
-Here's all the [Starbucks locations](https://github.com/mmcloughlin/starbucks).
+Here's all the [Starbucks
+locations](https://github.com/mmcloughlin/starbucks). Note `color.NRGBA`
+recommended to [avoid
+artifacts](https://github.com/mmcloughlin/globe/issues/6).
 
 ```go
 shops, err := LoadCoffeeShops("./starbucks.json")
