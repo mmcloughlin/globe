@@ -3,14 +3,14 @@
 Globe wireframe visualizations in Golang backed by
 [pinhole](https://github.com/tidwall/pinhole).
 
-[![GoDoc Reference](http://img.shields.io/badge/godoc-reference-5272B4.svg?style=flat-square)](http://godoc.org/github.com/mmcloughlin/globe)
+[![go.dev Reference](https://img.shields.io/badge/doc-reference-007d9b?logo=go&style=flat-square)](https://pkg.go.dev/github.com/mmcloughlin/globe)
 [![Build status](https://img.shields.io/travis/mmcloughlin/globe.svg?style=flat-square)](https://travis-ci.org/mmcloughlin/globe)
 
 
 
 
 
-<p align="center"><img src="http://i.imgur.com/1xkWn2v.png" /></p>
+<p align="center"><img src="https://i.imgur.com/ZBH6EXO.png" /></p>
 
 ## Getting Started
 
@@ -27,7 +27,7 @@ g := globe.New()
 g.DrawGraticule(10.0)
 g.SavePNG("graticule.png", 400)
 ```
-<p align="center"><img src="http://i.imgur.com/XcfK1VI.png" /></p>
+<p align="center"><img src="https://i.imgur.com/sACad5V.png" /></p>
 
 Add some land boundaries and center it on a point. Alternatively
 [`DrawCountryBoundaries`](https://godoc.org/github.com/mmcloughlin/globe#Globe.DrawCountryBoundaries)
@@ -40,7 +40,7 @@ g.DrawLandBoundaries()
 g.CenterOn(51.453349, -2.588323)
 g.SavePNG("land.png", 400)
 ```
-<p align="center"><img src="http://i.imgur.com/VNsNySI.png" /></p>
+<p align="center"><img src="https://i.imgur.com/HS4nKKP.png" /></p>
 
 Here's all the [Starbucks
 locations](https://github.com/mmcloughlin/starbucks). Note `color.NRGBA`
@@ -65,7 +65,7 @@ if err != nil {
 	log.Fatal(err)
 }
 ```
-<p align="center"><img src="http://i.imgur.com/FyZABLE.png" /></p>
+<p align="center"><img src="https://i.imgur.com/GIRuRcM.png" /></p>
 
 You can also do lines along great circles.
 
@@ -81,7 +81,7 @@ g.DrawLine(
 g.CenterOn(50.244440, -37.207949)
 g.SavePNG("line.png", 400)
 ```
-<p align="center"><img src="http://i.imgur.com/6WLCWv8.png" /></p>
+<p align="center"><img src="https://i.imgur.com/8cZFRmF.png" /></p>
 
 Also rectangles.
 
@@ -97,7 +97,7 @@ g.DrawRect(
 g.CenterOn(48, 25)
 g.SavePNG("rect.png", 400)
 ```
-<p align="center"><img src="http://i.imgur.com/KJfIl9l.png" /></p>
+<p align="center"><img src="https://i.imgur.com/esyUo5W.png" /></p>
 
 See [examples](examples/) and
 [godoc](https://godoc.org/github.com/mmcloughlin/globe) for more.

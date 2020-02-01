@@ -10,7 +10,11 @@ world.topojson:
 	go run buildgeodata.go -input $< -output $@ -var $*
 	gofmt -s -w $@
 
+%.md: %.md.j2
+	j2 $< > $@
+
 tools:
+	pip install j2cli==v0.3.1.post0
 	npm install -g topojson
 
 testimages:
