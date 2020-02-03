@@ -57,9 +57,14 @@ type Globe struct {
 
 // New constructs an empty globe with the default style.
 func New() *Globe {
+	return NewStyled(DefaultStyle)
+}
+
+// NewStyled constructs an empty globe with the provided style.
+func NewStyled(style Style) *Globe {
 	return &Globe{
-		p:     pinhole.New(),
-		style: DefaultStyle,
+		p: pinhole.New(),
+		style: style,
 	}
 }
 
