@@ -26,7 +26,7 @@ cities.json:
 	wget -O cities.json 'https://unpkg.com/cities.json@1.1.2/cities.json'
 
 tools:
-	go get github.com/mattn/imgur
+	go install github.com/mattn/imgur@v0.0.0-20201112131930-001c86d92ed2
 
 clean:
 	$(RM) *.json *.png

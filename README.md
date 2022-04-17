@@ -10,7 +10,7 @@ Globe wireframe visualizations in Golang backed by
 
 
 
-<p align="center"><img src="https://i.imgur.com/ZBH6EXO.png" /></p>
+<p align="center"><img src="https://i.imgur.com/D0ZcrFu.png" /></p>
 
 ## Getting Started
 
@@ -27,7 +27,7 @@ g := globe.New()
 g.DrawGraticule(10.0)
 g.SavePNG("graticule.png", 400)
 ```
-<p align="center"><img src="https://i.imgur.com/sACad5V.png" /></p>
+<p align="center"><img src="https://i.imgur.com/gXcYu8r.png" /></p>
 
 Add some land boundaries and center it on a point. Alternatively
 [`DrawCountryBoundaries`](https://godoc.org/github.com/mmcloughlin/globe#Globe.DrawCountryBoundaries)
@@ -40,7 +40,7 @@ g.DrawLandBoundaries()
 g.CenterOn(51.453349, -2.588323)
 g.SavePNG("land.png", 400)
 ```
-<p align="center"><img src="https://i.imgur.com/HS4nKKP.png" /></p>
+<p align="center"><img src="https://i.imgur.com/rlzEKfX.png" /></p>
 
 Here's all the [Starbucks
 locations](https://github.com/mmcloughlin/starbucks). Note `color.NRGBA`
@@ -65,7 +65,7 @@ if err != nil {
 	log.Fatal(err)
 }
 ```
-<p align="center"><img src="https://i.imgur.com/GIRuRcM.png" /></p>
+<p align="center"><img src="https://i.imgur.com/s46UomA.png" /></p>
 
 You can also do lines along great circles.
 
@@ -81,7 +81,7 @@ g.DrawLine(
 g.CenterOn(50.244440, -37.207949)
 g.SavePNG("line.png", 400)
 ```
-<p align="center"><img src="https://i.imgur.com/8cZFRmF.png" /></p>
+<p align="center"><img src="https://i.imgur.com/W2lUCTc.png" /></p>
 
 Also rectangles.
 
@@ -97,7 +97,7 @@ g.DrawRect(
 g.CenterOn(48, 25)
 g.SavePNG("rect.png", 400)
 ```
-<p align="center"><img src="https://i.imgur.com/esyUo5W.png" /></p>
+<p align="center"><img src="https://i.imgur.com/oWEiV1v.png" /></p>
 
 See [examples](examples/) and
 [godoc](https://godoc.org/github.com/mmcloughlin/globe) for more.

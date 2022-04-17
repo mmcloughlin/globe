@@ -14,7 +14,7 @@ world.topojson:
 	j2 $< > $@
 
 tools:
-	pip install j2cli==v0.3.1.post0
+	pip install j2cli==v0.3.2.post0
 	npm install -g topojson
 
 testimages:
@@ -22,4 +22,3 @@ testimages:
 
 testimagehashes: testimages
 	md5sum Test*.png
-

@@ -28,3 +28,6 @@ jobs:
         run: go build
       - name: Test
         run: go test -v
+      - name: Examples
+        working-directory: examples
+        run: make images
