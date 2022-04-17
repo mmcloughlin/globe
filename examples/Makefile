@@ -23,7 +23,7 @@ starbucks.json:
 cities.png: cities.json
 
 cities.json:
-	wget -O cities.json 'https://unpkg.com/cities.json@1.0.2/cities.json'
+	wget -O cities.json 'https://unpkg.com/cities.json@1.1.2/cities.json'
 
 tools:
 	go get github.com/mattn/imgur
