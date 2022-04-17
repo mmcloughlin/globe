@@ -99,8 +99,8 @@ g.SavePNG("rect.png", 400)
 ```
 <p align="center"><img src="https://i.imgur.com/oWEiV1v.png" /></p>
 
-See [examples](examples/) and
-[godoc](https://godoc.org/github.com/mmcloughlin/globe) for more.
+See [examples](examples/) and [package
+documentation](https://pkg.go.dev/github.com/mmcloughlin/globe) for more.
 
 ## License
 
