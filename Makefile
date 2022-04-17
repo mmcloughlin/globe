@@ -1,7 +1,7 @@
 geodata: land.geodata.go countries.geodata.go
 
 world.topojson:
-	wget -O $@ https://unpkg.com/world-atlas@1.1.4/world/110m.json
+	wget -nv -O $@ https://unpkg.com/world-atlas@1.1.4/world/110m.json
 
 %.world.geojson: world.topojson
 	topo2geo --in $< $*=$@
@@ -14,7 +14,7 @@ world.topojson:
 	j2 $< > $@
 
 tools:
-	pip install j2cli==v0.3.2.post0
+	pip3 install j2cli==v0.3.2.post0
 	npm install -g topojson
 
 testimages:
